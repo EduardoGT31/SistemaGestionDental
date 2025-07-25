@@ -11,9 +11,13 @@ class historial_clinico extends Model
 
     protected $table = 'historial_clinicos';
 
+    protected $primaryKey = 'id_historial_clinico';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
     protected $fillable = [
-        'paciente_id',
-        'usuario_id',
+        'id_paciente',
+        'odontologo',
         'fecha',
         'motivo_consulta',
         'diagnostico',
@@ -26,12 +30,7 @@ class historial_clinico extends Model
     // Relación: un historial pertenece a un paciente
     public function paciente()
     {
-        return $this->belongsTo(Paciente::class);
+        return $this->belongsTo(Paciente::class, 'id_paciente', 'id_paciente');
     }
 
-    // Relación: un historial fue creado por un usuario (odontólogo)
-    public function odontologo()
-    {
-        return $this->belongsTo(Usuario::class, 'usuario_id');
-    }
 }

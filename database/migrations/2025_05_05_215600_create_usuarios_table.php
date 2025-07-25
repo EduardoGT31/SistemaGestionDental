@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('nombre_s', 60)->nullable(false);
             $table->string('apellido_p', 60)->nullable(false);
             $table->string('apellido_s', 60)->nullable(false);
-            $table->string('usuario')->unique()->nullable(false);;
-            $table->string('contrasenia');
-            $table->string('telefono', 10);
-            $table->string('correo', 100);
+            $table->string('usuario')->unique()->nullable(false);
+            $table->string('contrasenia')->nullable(false);
+            $table->string('telefono', 10)->nullable(false);
+            $table->string('correo', 100)->nullable(false);
             $table->string('rol', 60)->nullable(false);
             $table->timestamps();
         });

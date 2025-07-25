@@ -11,6 +11,10 @@ class usuario extends Model
 
     protected $table = 'usuarios';
     
+    protected $primaryKey = 'id_usuario';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
     protected $fillable = [
         'cedula',
         'nombre_p',
@@ -20,6 +24,7 @@ class usuario extends Model
         'usuario',
         'contrasenia',
         'telefono',
+        'correo',
         'rol'
     ];
     

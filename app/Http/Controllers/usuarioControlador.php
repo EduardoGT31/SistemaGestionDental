@@ -30,7 +30,9 @@ class usuarioControlador extends Controller
                 ->orWhereRaw('LOWER(apellido_p) LIKE ?', ["%$buscar%"])
                 ->orWhereRaw('LOWER(usuario) LIKE ?', ["%$buscar%"])
                 ->orWhereRaw('LOWER(cedula) LIKE ?', ["%$buscar%"]);
-        })->paginate(10);
+        })
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);;
 
         return view('usuario/indexUsuario', compact('usuarios'));
     }
@@ -58,6 +60,7 @@ class usuarioControlador extends Controller
             'usuario'     => 'required|string|max:60|unique:usuarios,usuario',
             'contrasenia' => 'required|string|min:6',
             'telefono'    => 'required|string|max:20',
+            'correo'      => 'required|string|max:100|unique:usuarios,correo',
             'rol'         => 'required|string|in:Secretaria,Odontólogo,Administrador',
         ]);
 
@@ -90,7 +93,7 @@ class usuarioControlador extends Controller
      */
     public function update(Request $request, usuario $usuario)
     {
-        $usuario = Usuario::findOrFail($request->id);
+        $usuario = Usuario::findOrFail($request->id_usuario);
 
         // Valida y actualiza los datos
         $usuario->cedula = $request->cedula;
@@ -100,6 +103,7 @@ class usuarioControlador extends Controller
         $usuario->apellido_s = $request->apellido_s;
         $usuario->usuario = $request->usuario;
         $usuario->telefono = $request->telefono;
+        $usuario->correo = $request->correo;
         $usuario->rol = $request->rol;
 
         $usuario->save();
@@ -112,7 +116,7 @@ class usuarioControlador extends Controller
      */
     public function destroy(Request $request, usuario $usuario)
     {
-        $usuario = Usuario::findOrFail($request->id);
+        $usuario = Usuario::findOrFail($request->id_usuario);
 
         $usuario->delete();
 
@@ -128,7 +132,7 @@ class usuarioControlador extends Controller
             'contrasenia' => 'required|string|min:8',
         ]);
 
-        $usuario = Usuario::findOrFail($request->id);
+        $usuario = Usuario::findOrFail($request->id_usuario);
         $usuario->contrasenia = bcrypt($request->contrasenia);
         $usuario->save();
 

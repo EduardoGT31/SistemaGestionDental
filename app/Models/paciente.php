@@ -11,6 +11,10 @@ class paciente extends Model
 
     protected $table = 'pacientes';
 
+    protected $primaryKey = 'id_paciente';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
     protected $fillable = [
         'cedula',
         'nombre_p',

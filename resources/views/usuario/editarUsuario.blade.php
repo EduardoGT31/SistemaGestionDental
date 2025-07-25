@@ -4,7 +4,7 @@
         <form action="{{ route('editarUsuario') }}" method="POST" class="modal-content">
             @csrf
             @method('PUT')
-            <input type="hidden" id="editar_id" name="id">
+            <input type="hidden" id="editar_id" name="id_usuario">
 
             <!-- Encabezado amarillo -->
             <div class="modal-header bg-warning text-white">
@@ -49,10 +49,16 @@
                     <input type="text" class="form-control" id="editar_usuario" name="usuario" required>
                 </div>
 
-                <!-- Teléfono -->
-                <div class="mb-3">
-                    <label for="editar_telefono" class="form-label">Teléfono</label>
-                    <input type="text" class="form-control" id="editar_telefono" name="telefono" required>
+                <!-- Teléfono y Correo lado a lado -->
+                <div class="row g-3 mb-3">
+                    <div class="col">
+                        <label for="editar_telefono" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="editar_telefono" name="telefono" required>
+                    </div>
+                    <div class="col">
+                        <label for="editar_correo" class="form-label">Correo electrónico</label>
+                        <input type="email" class="form-control" id="editar_correo" name="correo" required>
+                    </div>
                 </div>
 
                 <!-- Rol -->
@@ -82,7 +88,7 @@
 
         const usuario = JSON.parse(elemento.getAttribute('data-usuario'));
 
-        document.getElementById('editar_id').value = usuario.id;
+        document.getElementById('editar_id').value = usuario.id_usuario;
         document.getElementById('editar_cedula').value = usuario.cedula;
         document.getElementById('editar_nombre_p').value = usuario.nombre_p;
         document.getElementById('editar_nombre_s').value = usuario.nombre_s;
@@ -90,6 +96,7 @@
         document.getElementById('editar_apellido_s').value = usuario.apellido_s;
         document.getElementById('editar_usuario').value = usuario.usuario;
         document.getElementById('editar_telefono').value = usuario.telefono;
+        document.getElementById('editar_correo').value = usuario.correo;
         document.getElementById('editar_rol').value = usuario.rol;
     }
 </script>

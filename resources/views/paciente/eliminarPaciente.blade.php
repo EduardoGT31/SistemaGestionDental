@@ -4,7 +4,7 @@
         <form id="formEliminarPaciente" method="POST" action="{{ route('eliminarPaciente') }}">
             @csrf
             @method('DELETE')
-            <input type="hidden" id="eliminar_id" name="id">
+            <input type="hidden" id="eliminar_id" name="id_paciente">
 
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
@@ -27,7 +27,7 @@
 <script>
     function mostrarModalEliminarPaciente(elemento) {
         const paciente = JSON.parse(elemento.getAttribute('data-paciente'));
-        document.getElementById('eliminar_id').value = paciente.id;
+        document.getElementById('eliminar_id').value = paciente.id_paciente;
         document.getElementById('nombreEliminarPaciente').textContent = paciente.nombre_p + ' ' + paciente.apellido_p;
     }
 </script>

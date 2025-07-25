@@ -38,34 +38,43 @@
                     </div>
                 </div>
 
-                <!-- Usuario -->
-                <div class="mb-3">
-                    <label for="usuario" class="form-label">Usuario</label>
-                    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Nombre de usuario" required>
+                <!-- Usuario y Contraseña lado a lado -->
+                <div class="row g-3 mb-3">
+                    <div class="col">
+                        <label for="usuario" class="form-label">Usuario</label>
+                        <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Nombre de usuario" required>
+                    </div>
+                    <div class="col">
+                        <label for="contrasenia" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="contrasenia" name="contrasenia" placeholder="Contraseña" required>
+                    </div>
                 </div>
 
-                <!-- Contraseña -->
+                <!-- Correo -->
                 <div class="mb-3">
-                    <label for="contrasenia" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="contrasenia" name="contrasenia" placeholder="Contraseña" required>
+                    <label for="correo" class="form-label">Correo electrónico</label>
+                    <input type="email" class="form-control" id="correo" name="correo" placeholder="ejemplo@dominio.com" required>
                 </div>
 
-                <!-- Teléfono -->
-                <div class="mb-3">
-                    <label for="telefono" class="form-label">Teléfono</label>
-                    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Número de teléfono" required>
+                <div class="row g-3 mb-3">
+                    <!-- Teléfono -->
+                    <div class="col">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Número de teléfono" required>
+                    </div>
+
+                    <!-- Rol -->
+                    <div class="col">
+                        <label for="rol" class="form-label">Rol</label>
+                        <select class="form-select" id="rol" name="rol" required>
+                            <option value="" selected disabled>Seleccione un rol</option>
+                            <option value="Secretaria">Secretaria</option>
+                            <option value="Odontólogo">Odontólogo</option>
+                            <option value="Administrador">Administrador</option>
+                        </select>
+                    </div>
                 </div>
 
-                <!-- Rol -->
-                <div class="mb-3">
-                    <label for="rol" class="form-label">Rol</label>
-                    <select class="form-select" id="rol" name="rol" required>
-                        <option value="" selected disabled>Seleccione un rol</option>
-                        <option value="Secretaria">Secretaria</option>
-                        <option value="Odontólogo">Odontólogo</option>
-                        <option value="Administrador">Administrador</option>
-                    </select>
-                </div>
 
             </div>
             <div class="modal-footer">

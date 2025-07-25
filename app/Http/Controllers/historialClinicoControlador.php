@@ -12,13 +12,13 @@ class historialClinicoControlador extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($id)
+    public function index($id_paciente)
     {
-        $paciente = Paciente::findOrFail($id);
+        $paciente = Paciente::findOrFail($id_paciente);
 
         // Cargar historial del paciente ordenado por fecha descendente
-        $historiales = Historial_Clinico::where('paciente_id', $id)
-            ->with('odontologo')
+        $historiales = Historial_Clinico::where('id_paciente', $id_paciente)
+            //->with('odontologo')
             ->orderBy('fecha', 'desc')
             ->get();
 
@@ -41,10 +41,8 @@ class historialClinicoControlador extends Controller
      */
     public function store(Request $request)
     {
-        // Validación de los datos
         $request->validate([
-            'paciente_id' => 'required|exists:pacientes,id',
-            'odontologo' => 'required|string|max:100',
+            'id_paciente' => 'required|exists:pacientes,id_paciente',
             'fecha' => 'required|date',
             'motivo_consulta' => 'nullable|string',
             'diagnostico' => 'nullable|string',
@@ -52,12 +50,13 @@ class historialClinicoControlador extends Controller
             'observaciones' => 'nullable|string',
             'pieza_dental' => 'nullable|string|max:20',
             'tipo_tratamiento' => 'nullable|string|max:100',
+            'odontologo_id' => 'required|exists:usuarios,id_usuario',
         ]);
 
-        // Crear nueva historia clínica
         $historial = new Historial_Clinico();
-        $historial->paciente_id = $request->paciente_id;
-        $historial->odontologo = $request->odontologo;
+        $historial->id_paciente = $request->id_paciente;
+        //$historial->odontologo = $request->odontologo_id;
+        //<td>{{ $historia->odontologo->nombre_p }} {{ $historia->odontologo->apellido_p }}</td>
         $historial->fecha = $request->fecha;
         $historial->motivo_consulta = $request->motivo_consulta;
         $historial->diagnostico = $request->diagnostico;
@@ -67,7 +66,6 @@ class historialClinicoControlador extends Controller
         $historial->tipo_tratamiento = $request->tipo_tratamiento;
         $historial->save();
 
-        // Redirigir con mensaje
         return redirect()->back()->with('success', 'Historia clínica registrada correctamente.');
     }
 

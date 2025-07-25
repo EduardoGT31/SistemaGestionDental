@@ -4,7 +4,7 @@
         <form action="{{ route('eliminarUsuario') }}" method="POST" >
             @csrf
             @method('DELETE')
-            <input type="hidden" id="eliminar_id" name="id"> <!-- ID oculto del usuario -->
+            <input type="hidden" id="eliminar_id" name="id_usuario"> 
 
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
@@ -27,7 +27,7 @@
     function mostrarModalEliminar(elemento) {
         const usuario = JSON.parse(elemento.getAttribute('data-usuario'));
 
-        document.getElementById('eliminar_id').value = usuario.id;
+        document.getElementById('eliminar_id').value = usuario.id_usuario;
         document.getElementById('nombreEliminar').textContent = usuario.nombre_p + ' ' + usuario.apellido_p;
     }
 </script>

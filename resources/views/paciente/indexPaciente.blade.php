@@ -61,7 +61,7 @@
                 </a>
 
                 <!-- Botón Historial Clínico -->
-                <a href="{{ route('indexHistorialClinico', $paciente->id) }}" class="btn btn-sm btn-info d-flex align-items-center">
+                <a href="{{ route('indexHistorialClinico', $paciente->id_paciente) }}" class="btn btn-sm btn-info d-flex align-items-center">
                    <i class="bi bi-file-medical me-1"></i> H. Clínica
                 </a>
 

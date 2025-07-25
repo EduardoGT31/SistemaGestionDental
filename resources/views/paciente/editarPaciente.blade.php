@@ -4,7 +4,7 @@
         <form id="formEditarPaciente" method="POST" action="{{ route('editarPaciente') }}" class="modal-content">
             @csrf
             @method('PUT')
-            <input type="hidden" id="editar_id" name="id"> <!-- ID oculto -->
+            <input type="hidden" id="editar_id" name="id_paciente"> <!-- ID oculto -->
 
             <div class="modal-header bg-warning text-white">
                 <h5 class="modal-title" id="editarPacienteModalLabel">Editar Paciente</h5>
@@ -86,7 +86,7 @@
     function mostrarModalEditarPaciente(elemento) {
         const paciente = JSON.parse(elemento.getAttribute('data-paciente'));
 
-        document.getElementById('editar_id').value = paciente.id;
+        document.getElementById('editar_id').value = paciente.id_paciente;
         document.getElementById('editar_cedula').value = paciente.cedula;
         document.getElementById('editar_nombre_p').value = paciente.nombre_p;
         document.getElementById('editar_nombre_s').value = paciente.nombre_s;

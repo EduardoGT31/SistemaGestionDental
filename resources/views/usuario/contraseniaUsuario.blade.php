@@ -4,7 +4,7 @@
         <form action="{{ route('resetearUsuario') }}" method="POST" id="formResetearUsuario">
             @csrf
             @method('PUT')
-            <input type="hidden" id="reset_id" name="id"> <!-- ID oculto del usuario -->
+            <input type="hidden" id="reset_id" name="id_usuario"> <!-- ID oculto del usuario -->
 
             <div class="modal-content">
                 <div class="modal-header bg-secondary text-white">
@@ -46,7 +46,7 @@
     function mostrarModalReset(elemento) {
         const usuario = JSON.parse(elemento.getAttribute('data-usuario'));
 
-        document.getElementById('reset_id').value = usuario.id;
+        document.getElementById('reset_id').value = usuario.id_usuario;
         document.getElementById('nombreReset').textContent = usuario.nombre_p + ' ' + usuario.apellido_p;
 
         // Resetear campos por defecto

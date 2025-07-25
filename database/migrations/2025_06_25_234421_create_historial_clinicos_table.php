@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('historial_clinicos', function (Blueprint $table) {
 
-            $table->id();
+            $table->bigIncrements('id_historial_clinico');
 
             // Relaciones
-            $table->unsignedBigInteger('paciente_id');
-            $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('id_paciente');
 
             // Información médica
             $table->date('fecha')->nullable();
@@ -33,8 +32,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Claves foráneas
-            $table->foreign('paciente_id')->references('id')->on('pacientes')->onDelete('cascade');
-            $table->foreign('usuario_id')->references('id_usuario')->on('usuarios')->onDelete('cascade');
+            $table->foreign('id_paciente')->references('id_paciente')->on('pacientes')->onDelete('cascade');
 
         });
     }

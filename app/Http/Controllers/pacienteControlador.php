@@ -21,7 +21,9 @@ class pacienteControlador extends Controller
                 ->orWhereRaw('LOWER(apellido_p) LIKE ?', ["%$buscar%"])
                 ->orWhereRaw('LOWER(telefono) LIKE ?', ["%$buscar%"])
                 ->orWhereRaw('LOWER(cedula) LIKE ?', ["%$buscar%"]);
-        })->paginate(10);
+        })
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);;
 
         return view('paciente/indexPaciente', compact('pacientes'));
     }
@@ -40,7 +42,7 @@ class pacienteControlador extends Controller
     public function store(Request $request)
     {
         // Validación
-        $request->validate([
+        $validatedData = $request->validate([
             'cedula' => 'required|max:13|unique:pacientes,cedula',
             'nombre_p' => 'required|string|max:60',
             'nombre_s' => 'nullable|string|max:60',
@@ -53,17 +55,7 @@ class pacienteControlador extends Controller
         ]);
 
         // Crear nuevo paciente
-        $paciente = new Paciente();
-        $paciente->cedula = $request->cedula;
-        $paciente->nombre_p = $request->nombre_p;
-        $paciente->nombre_s = $request->nombre_s;
-        $paciente->apellido_p = $request->apellido_p;
-        $paciente->apellido_s = $request->apellido_s;
-        $paciente->genero = $request->genero;
-        $paciente->fecha_nacimiento = $request->fecha_nacimiento;
-        $paciente->telefono = $request->telefono;
-        $paciente->direccion = $request->direccion;
-        $paciente->save();
+        Paciente::create($validatedData);
 
         // Redirigir con mensaje
         return redirect()->back()->with('success', 'Paciente registrado correctamente.');
@@ -92,7 +84,7 @@ class pacienteControlador extends Controller
     {
         // Validacion
         $request->validate([
-            'id' => 'required|exists:pacientes,id',
+            'id_paciente' => 'required|exists:pacientes,id_paciente',
             'cedula' => 'nullable|string|max:13',
             'nombre_p' => 'required|string|max:60',
             'nombre_s' => 'nullable|string|max:60',
@@ -104,7 +96,7 @@ class pacienteControlador extends Controller
             'direccion' => 'nullable|string|max:255',
         ]);
 
-        $paciente = Paciente::findOrFail($request->id);
+        $paciente = Paciente::findOrFail($request->id_paciente);
 
         // Actualizar campos
         $paciente->cedula = $request->cedula;
@@ -129,7 +121,7 @@ class pacienteControlador extends Controller
      */
     public function destroy(Request $request, Paciente $paciente)
     {
-        $paciente = Paciente::findOrFail($request->id);
+        $paciente = Paciente::findOrFail($request->id_paciente);
 
         $paciente->delete();
 
