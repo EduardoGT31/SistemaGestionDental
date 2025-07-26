@@ -21,7 +21,6 @@ class historial_clinico extends Model
         'fecha',
         'motivo_consulta',
         'diagnostico',
-        'tratamiento',
         'observaciones',
         'pieza_dental',
         'tipo_tratamiento',

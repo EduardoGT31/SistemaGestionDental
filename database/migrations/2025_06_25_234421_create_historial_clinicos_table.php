@@ -21,11 +21,9 @@ return new class extends Migration
             // Información médica
             $table->date('fecha')->nullable();
             $table->text('motivo_consulta')->nullable();
+            $table->string('odontologo')->nullable();
             $table->text('diagnostico')->nullable();
-            $table->text('tratamiento')->nullable();
             $table->text('observaciones')->nullable();
-
-            // Información odontológica opcional
             $table->string('pieza_dental')->nullable();
             $table->string('tipo_tratamiento')->nullable();
 

@@ -16,9 +16,7 @@ class historialClinicoControlador extends Controller
     {
         $paciente = Paciente::findOrFail($id_paciente);
 
-        // Cargar historial del paciente ordenado por fecha descendente
         $historiales = Historial_Clinico::where('id_paciente', $id_paciente)
-            //->with('odontologo')
             ->orderBy('fecha', 'desc')
             ->get();
 
@@ -46,21 +44,18 @@ class historialClinicoControlador extends Controller
             'fecha' => 'required|date',
             'motivo_consulta' => 'nullable|string',
             'diagnostico' => 'nullable|string',
-            'tratamiento' => 'nullable|string',
             'observaciones' => 'nullable|string',
             'pieza_dental' => 'nullable|string|max:20',
             'tipo_tratamiento' => 'nullable|string|max:100',
-            'odontologo_id' => 'required|exists:usuarios,id_usuario',
+            'odontologo' => 'required|string|max:100',
         ]);
 
         $historial = new Historial_Clinico();
         $historial->id_paciente = $request->id_paciente;
-        //$historial->odontologo = $request->odontologo_id;
-        //<td>{{ $historia->odontologo->nombre_p }} {{ $historia->odontologo->apellido_p }}</td>
+        $historial->odontologo = $request->odontologo;
         $historial->fecha = $request->fecha;
         $historial->motivo_consulta = $request->motivo_consulta;
         $historial->diagnostico = $request->diagnostico;
-        $historial->tratamiento = $request->tratamiento;
         $historial->observaciones = $request->observaciones;
         $historial->pieza_dental = $request->pieza_dental;
         $historial->tipo_tratamiento = $request->tipo_tratamiento;
@@ -88,16 +83,28 @@ class historialClinicoControlador extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, historial_clinico $historial_clinico)
+    public function update(Request $request, $id_paciente)
     {
-        //
+        $historial = historial_clinico::findOrFail($request->id_paciente);
+
+        $historial->pieza_dental = $request->pieza_dental;
+        $historial->tipo_tratamiento = $request->tipo_tratamiento;
+        $historial->motivo_consulta = $request->motivo_consulta;
+        $historial->observaciones = $request->observaciones;
+
+        $historial->save();
+
+        return redirect()->back()->with('success', 'Historial actualizado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(historial_clinico $historial_clinico)
+    public function destroy(Request $request)
     {
-        //
+        $historial = historial_clinico::findOrFail($request->id_historial_clinico);
+        $historial->delete();
+
+        return redirect()->back()->with('success', 'Historial clínico eliminado correctamente.');
     }
 }

@@ -38,5 +38,7 @@ Route::delete('/patients/delete', [pacienteControlador::class, 'destroy'])->name
 //Historial Clinico
 Route::get('/medical_history/{id_paciente}', [historialClinicoControlador::class, 'index'])->name('indexHistorialClinico');
 Route::post('/medical_history/{id_paciente}/store', [historialClinicoControlador::class, 'store'])->name('storeHistorialClinico');
+Route::put('/medical_history/{id_paciente}/update', [historialClinicoControlador::class, 'update'])->name('updateHistorialClinico');
+Route::delete('/medical_history/delete', [HistorialClinicoControlador::class, 'destroy'])->name('deleteHistorialClinico');
 
 //Route::middleware(['auth'])->group(function () {});
