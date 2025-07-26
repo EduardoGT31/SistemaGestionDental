@@ -83,9 +83,13 @@
                         <div class="d-flex flex-wrap justify-content-center gap-2">
 
                             <!-- Botón Detalles -->
-                            <a href="#" class="btn btn-sm btn-info d-flex align-items-center text-white">
+                            <a href="#" class="btn btn-sm btn-info d-flex align-items-center text-white"
+                                data-bs-toggle="modal" data-bs-target="#detallesHistorialModal"
+                                data-historial='@json($historia)'
+                                onclick="mostrarModalDetallesHistorial(this)">
                                 <i class="bi bi-info-circle me-1"></i> Detalles
                             </a>
+
 
                             <!-- Botón Editar -->
                             <a href="#" class="btn btn-sm btn-warning d-flex align-items-center"
@@ -121,8 +125,14 @@
 
         @include('historialClinico.editarHistorialClinico')
         @include('historialClinico.eliminarHistorialClinico')
+        @include('historialClinico.detalleHistorialClinico')
 
     </div>
+</div>
+
+<!-- Paginación -->
+<div class="d-flex justify-content-center mt-3">
+    {{ $historiales->links() }}
 </div>
 
 </div>

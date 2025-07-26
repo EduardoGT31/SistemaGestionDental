@@ -18,7 +18,8 @@ class historialClinicoControlador extends Controller
 
         $historiales = Historial_Clinico::where('id_paciente', $id_paciente)
             ->orderBy('fecha', 'desc')
-            ->get();
+            ->paginate(10);
+
 
         // Odontólogos
         $odontologos = Usuario::where('rol', 'Odontólogo')->get();
@@ -83,9 +84,10 @@ class historialClinicoControlador extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id_paciente)
+
+    public function update(Request $request)
     {
-        $historial = historial_clinico::findOrFail($request->id_paciente);
+        $historial = historial_clinico::findOrFail($request->id_historial_clinico);
 
         $historial->pieza_dental = $request->pieza_dental;
         $historial->tipo_tratamiento = $request->tipo_tratamiento;

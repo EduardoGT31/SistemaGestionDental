@@ -14,6 +14,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="id" id="editar_id">
                     <input type="hidden" name="id_paciente" id="id_paciente">
+                    <input type="hidden" name="id_historial_clinico" id="id_historial_clinico">
 
                     <div class="mb-3">
                         <label for="editar_pieza_dental" class="form-label">Pieza Dental</label>
@@ -50,9 +51,8 @@
     function mostrarModalEditarHistorial(button) {
         const historial = JSON.parse(button.getAttribute('data-historial'));
         const url = button.getAttribute('data-href');
-
-        document.getElementById('editar_id').value = historial.id_historial_clinico;
-        document.getElementById('id_paciente').value = historial.id_paciente;
+        
+        document.getElementById('id_historial_clinico').value = historial.id_historial_clinico;
         document.getElementById('editar_pieza_dental').value = historial.pieza_dental;
         document.getElementById('editar_tipo_tratamiento').value = historial.tipo_tratamiento;
         document.getElementById('editar_motivo_consulta').value = historial.motivo_consulta;
