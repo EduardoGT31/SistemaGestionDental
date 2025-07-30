@@ -4,8 +4,49 @@ use App\Http\Controllers\loginControlador;
 use App\Http\Controllers\usuarioControlador;
 use App\Http\Controllers\pacienteControlador;
 use App\Http\Controllers\historialClinicoControlador;
+use App\Http\Controllers\citasControlador;
 use Illuminate\Support\Facades\Route;
 
+// Ruta para mostrar formulario login (pública)
+Route::get('/', function () {
+    return view('login');
+})->name('login');
+
+// Ruta POST para procesar login y redirigir según rol
+Route::post('/dashboard', [loginControlador::class, 'verificacionLogin'])->name('loginExitoso');
+
+// Ruta para cerrar sesión
+Route::get('/logout', [loginControlador::class, 'cerrarSesion'])->name('cerrarSesion');
+
+
+// Rutas protegidas para cada rol con control manual de sesión y rol
+
+// Dashboard Admin
+Route::get('/dashboard/admin', function () {
+    if (!session()->has('id') || session('rol') !== 'Administrador') {
+        return redirect()->route('login')->with('error', 'Acceso no autorizado');
+    }
+    return view('dashboard.menuPrincipalAdmin');
+})->name('inicioAdmin');
+
+// Dashboard Odontólogo
+Route::get('/dashboard/odontologo', function () {
+    if (!session()->has('id') || session('rol') !== 'Odontólogo') {
+        return redirect()->route('login')->with('error', 'Acceso no autorizado');
+    }
+    return view('dashboard.menuPrincipalOdontologo');
+})->name('inicioOdontologo');
+
+// Dashboard Secretaria
+Route::get('/dashboard/secretaria', function () {
+    if (!session()->has('id') || session('rol') !== 'Secretaria') {
+        return redirect()->route('login')->with('error', 'Acceso no autorizado');
+    }
+    return view('dashboard.menuPrincipalSecretaria');
+})->name('inicioSecretaria');
+
+
+/*
 //Login
 Route::get('/', function () {
     return view('login');
@@ -20,7 +61,7 @@ Route::get('/logout', [loginControlador::class, 'cerrarSesion'])->name('cerrarSe
 //Inicio Admin
 Route::get('/dashboard', function () {
     return view('dashboard/menuPrincipalAdmin');
-})->name('inicioAdmin');
+})->name('inicioAdmin');*/
 
 //Usuarios
 Route::get('/users', [usuarioControlador::class, 'index'])->name('indexUsuarios');
@@ -41,4 +82,17 @@ Route::post('/medical_history/{id_paciente}/store', [historialClinicoControlador
 Route::put('/medical_history/{id_paciente}/update', [historialClinicoControlador::class, 'update'])->name('updateHistorialClinico');
 Route::delete('/medical_history/delete', [HistorialClinicoControlador::class, 'destroy'])->name('deleteHistorialClinico');
 
-//Route::middleware(['auth'])->group(function () {});
+//Citas
+Route::get('/citas', [citasControlador::class, 'index'])->name('indexCitas');
+Route::get('/buscar-paciente', [citasControlador::class, 'buscarPacientePorCedula'])->name('buscarPaciente');
+Route::post('/citas/guardar', [citasControlador::class, 'store'])->name('storeCitas');
+Route::put('/citas/update', [citasControlador::class, 'update'])->name('updateCitas');
+Route::delete('/citas/delete', [citasControlador::class, 'destroy'])->name('destroyCitas');
+
+//Calendario
+Route::get('/citas/calendario', [CitasControlador::class, 'verCalendario'])->name('calendarioCitas');
+
+//Pruebas
+/*Route::get('/citas/calendario', [citasControlador::class, 'calendario'])->name('citas.calendario');
+Route::get('/pacientes/buscar', [citasControlador::class, 'buscar']);*/
+

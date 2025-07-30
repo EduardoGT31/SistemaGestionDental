@@ -37,7 +37,19 @@
                 <i class="bi bi-calendar-check" style="color: #6f42c1;"></i>
                 <h5 class="mt-3">Citas</h5>
                 <p>Organizar horarios y turnos.</p>
-                <a href="#" class="btn w-100 text-white" style="background-color: #6f42c1;">Acceder</a>
+                <a href="{{ route('indexCitas') }}" class="btn w-100 text-white" style="background-color: #6f42c1;">Acceder</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendario -->
+    <div class="col-md-4">
+        <div class="menu-card card">
+            <div class="card-body">
+                <i class="bi bi-calendar-check" style="color: #6f42c1;"></i>
+                <h5 class="mt-3">Citas</h5>
+                <p>Organizar horarios y turnos.</p>
+                <a href="{{ route('calendarioCitas') }}" class="btn w-100 text-white" style="background-color: #6f42c1;">Acceder</a>
             </div>
         </div>
     </div>
