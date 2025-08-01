@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('citas', function (Blueprint $table) {
-            $table->id('id_cita'); // clave primaria personalizada
+            $table->id('id_cita'); 
+            
             $table->unsignedBigInteger('id_paciente');
             $table->unsignedBigInteger('id_usuario');
             $table->string('odontologo');

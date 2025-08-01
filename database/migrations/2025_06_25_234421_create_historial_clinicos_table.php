@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('historial_clinicos', function (Blueprint $table) {
 
-            $table->bigIncrements('id_historial_clinico');
+            $table->id('id_historial_clinico');
 
             // Relaciones
             $table->unsignedBigInteger('id_paciente');
@@ -26,6 +26,7 @@ return new class extends Migration
             $table->text('observaciones')->nullable();
             $table->string('pieza_dental')->nullable();
             $table->string('tipo_tratamiento')->nullable();
+            $table->string('estado');
 
             $table->timestamps();
 

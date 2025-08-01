@@ -25,7 +25,8 @@ class usuario extends Model
         'contrasenia',
         'telefono',
         'correo',
-        'rol'
+        'rol',
+        'estado',
     ];
     
 }

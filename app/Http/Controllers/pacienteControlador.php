@@ -12,21 +12,23 @@ class pacienteControlador extends Controller
      */
     public function index(Request $request)
     {
-        $buscar = $request->input('buscar');
-
         $buscar = strtolower($request->input('buscar'));
 
-        $pacientes = Paciente::when($buscar, function ($query, $buscar) {
-            $query->whereRaw('LOWER(nombre_p) LIKE ?', ["%$buscar%"])
-                ->orWhereRaw('LOWER(apellido_p) LIKE ?', ["%$buscar%"])
-                ->orWhereRaw('LOWER(telefono) LIKE ?', ["%$buscar%"])
-                ->orWhereRaw('LOWER(cedula) LIKE ?', ["%$buscar%"]);
-        })
+        $pacientes = Paciente::where('estado', 'Activo')
+            ->when($buscar, function ($query, $buscar) {
+                $query->where(function ($q) use ($buscar) {
+                    $q->whereRaw('LOWER(nombre_p) LIKE ?', ["%$buscar%"])
+                        ->orWhereRaw('LOWER(apellido_p) LIKE ?', ["%$buscar%"])
+                        ->orWhereRaw('LOWER(telefono) LIKE ?', ["%$buscar%"])
+                        ->orWhereRaw('LOWER(cedula) LIKE ?', ["%$buscar%"]);
+                });
+            })
             ->orderBy('updated_at', 'desc')
-            ->paginate(10);;
+            ->paginate(10);
 
-        return view('paciente/indexPaciente', compact('pacientes'));
+        return view('paciente.indexPaciente', compact('pacientes'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -53,6 +55,8 @@ class pacienteControlador extends Controller
             'telefono' => 'required|string|max:10',
             'direccion' => 'nullable|string|max:255',
         ]);
+
+        $validatedData['estado'] = 'Activo';
 
         // Crear nuevo paciente
         Paciente::create($validatedData);
@@ -119,12 +123,14 @@ class pacienteControlador extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, Paciente $paciente)
+    public function destroy(Request $request)
     {
         $paciente = Paciente::findOrFail($request->id_paciente);
 
-        $paciente->delete();
+        // Cambiar el estado a "Eliminado"
+        $paciente->estado = 'Eliminado';
+        $paciente->save();
 
-        return redirect()->route('indexPaciente');
+        return redirect()->route('indexPaciente')->with('success', 'Paciente eliminado lógicamente.');
     }
 }

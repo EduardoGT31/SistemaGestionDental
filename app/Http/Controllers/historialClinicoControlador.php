@@ -17,15 +17,16 @@ class historialClinicoControlador extends Controller
         $paciente = Paciente::findOrFail($id_paciente);
 
         $historiales = Historial_Clinico::where('id_paciente', $id_paciente)
+            ->where('estado', 'Activo') 
             ->orderBy('fecha', 'desc')
             ->paginate(10);
 
-
         // Odontólogos
-        $odontologos = Usuario::where('rol', 'Odontólogo')->get();
+        $odontologos = Usuario::where('rol', 'Odontólogo')->where('estado', 'Activo')->get();
 
-        return view('historialClinico/indexHistorialClinico', compact('paciente', 'historiales', 'odontologos'));
+        return view('historialClinico.indexHistorialClinico', compact('paciente', 'historiales', 'odontologos'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -60,6 +61,8 @@ class historialClinicoControlador extends Controller
         $historial->observaciones = $request->observaciones;
         $historial->pieza_dental = $request->pieza_dental;
         $historial->tipo_tratamiento = $request->tipo_tratamiento;
+        $historial->estado = 'Activo';
+
         $historial->save();
 
         return redirect()->back()->with('success', 'Historia clínica registrada correctamente.');
@@ -105,7 +108,10 @@ class historialClinicoControlador extends Controller
     public function destroy(Request $request)
     {
         $historial = historial_clinico::findOrFail($request->id_historial_clinico);
-        $historial->delete();
+
+        // Eliminación lógica
+        $historial->estado = 'Eliminado';
+        $historial->save();
 
         return redirect()->back()->with('success', 'Historial clínico eliminado correctamente.');
     }

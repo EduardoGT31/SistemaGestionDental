@@ -24,6 +24,7 @@ class historial_clinico extends Model
         'observaciones',
         'pieza_dental',
         'tipo_tratamiento',
+        'estado',
     ];
 
     // Relación: un historial pertenece a un paciente

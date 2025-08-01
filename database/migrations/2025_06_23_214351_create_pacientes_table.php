@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pacientes', function (Blueprint $table) {
-            $table->bigIncrements('id_paciente');
+        Schema::create('pacientes', function (Blueprint $table) {;
+            $table->id('id_paciente');
+
             $table->string('cedula', 13)->nullable(true);
             $table->string('nombre_p', 60)->nullable(true);
             $table->string('nombre_s', 60)->nullable(true);
@@ -22,6 +23,8 @@ return new class extends Migration
             $table->date('fecha_nacimiento')->nullable(true);
             $table->string('telefono', 10);
             $table->string('direccion', 100)->nullable(true);
+            $table->string('estado');
+
             $table->timestamps();
         });
     }

@@ -10,33 +10,23 @@ class usuarioControlador extends Controller
     /**
      * Display a listing of the resource.
      */
-    /*
-    
-    public function index()
-    {
-        $usuarios = Usuario::paginate(10); // Muestra 10 por página
-        //$usuarios = usuario::all();
-        return view('usuario/indexUsuario', compact('usuarios'));
-    }*/
 
     public function index(Request $request)
     {
-        $buscar = $request->input('buscar');
-
         $buscar = strtolower($request->input('buscar'));
 
-        $usuarios = Usuario::when($buscar, function ($query, $buscar) {
-            $query->whereRaw('LOWER(nombre_p) LIKE ?', ["%$buscar%"])
-                ->orWhereRaw('LOWER(apellido_p) LIKE ?', ["%$buscar%"])
-                ->orWhereRaw('LOWER(usuario) LIKE ?', ["%$buscar%"])
-                ->orWhereRaw('LOWER(cedula) LIKE ?', ["%$buscar%"]);
-        })
+        $usuarios = Usuario::where('estado', 'Activo') // Filtrar solo los activos
+            ->when($buscar, function ($query, $buscar) {
+                $query->whereRaw('LOWER(nombre_p) LIKE ?', ["%$buscar%"])
+                    ->orWhereRaw('LOWER(apellido_p) LIKE ?', ["%$buscar%"])
+                    ->orWhereRaw('LOWER(usuario) LIKE ?', ["%$buscar%"])
+                    ->orWhereRaw('LOWER(cedula) LIKE ?', ["%$buscar%"]);
+            })
             ->orderBy('updated_at', 'desc')
-            ->paginate(10);;
+            ->paginate(10);
 
         return view('usuario/indexUsuario', compact('usuarios'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -58,7 +48,7 @@ class usuarioControlador extends Controller
             'apellido_p'  => 'required|string|max:60',
             'apellido_s'  => 'nullable|string|max:60',
             'usuario'     => 'required|string|max:60|unique:usuarios,usuario',
-            'contrasenia' => 'required|string|min:6',
+            'contrasenia' => 'required|string|min:3',
             'telefono'    => 'required|string|max:20',
             'correo'      => 'required|string|max:100|unique:usuarios,correo',
             'rol'         => 'required|string|in:Secretaria,Odontólogo,Administrador',
@@ -66,6 +56,7 @@ class usuarioControlador extends Controller
 
         // Encriptar contraseña antes de guardar
         $validatedData['contrasenia'] = bcrypt($validatedData['contrasenia']);
+        $validatedData['estado'] = 'Activo';
 
         Usuario::create($validatedData);
 
@@ -114,14 +105,17 @@ class usuarioControlador extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, usuario $usuario)
+    public function destroy(Request $request, Usuario $usuario)
     {
         $usuario = Usuario::findOrFail($request->id_usuario);
 
-        $usuario->delete();
+        // Eliminar lógicamente cambiando el estado
+        $usuario->estado = 'Eliminado';
+        $usuario->save();
 
-        return redirect()->route('indexUsuarios');
+        return redirect()->route('indexUsuarios')->with('success', 'Usuario eliminado correctamente.');
     }
+
 
     /**
      * ResetPassword

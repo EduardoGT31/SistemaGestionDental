@@ -24,6 +24,7 @@ class paciente extends Model
         'genero',
         'fecha_nacimiento',
         'telefono',
-        'direccion'
+        'direccion',
+        'estado',
     ];
 }

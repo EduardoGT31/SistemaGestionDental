@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('usuarios', function (Blueprint $table) {
-            $table->bigIncrements('id_usuario');
+            $table->id('id_usuario');
+            
             $table->string('cedula', 13)->nullable(false);
             $table->string('nombre_p', 60)->nullable(false);
             $table->string('nombre_s', 60)->nullable(false);
@@ -23,6 +24,8 @@ return new class extends Migration
             $table->string('telefono', 10)->nullable(false);
             $table->string('correo', 100)->nullable(false);
             $table->string('rol', 60)->nullable(false);
+            $table->string('estado');
+
             $table->timestamps();
         });
     }
