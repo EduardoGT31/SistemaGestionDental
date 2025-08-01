@@ -14,12 +14,21 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         events: eventos,
         eventClick: function(info) {
-            alert(
-                info.event.title + '\n' +
-                'Fecha y hora: ' + info.event.start.toLocaleString()
-            );
+            const event = info.event;
+            const props = event.extendedProps;
+
+            document.getElementById('modalTitulo').textContent = 'Detalles de la Cita';
+            document.getElementById('modalPaciente').textContent = props.paciente;
+            document.getElementById('modalOdontologo').textContent = props.odontologo;
+            document.getElementById('modalFecha').textContent = props.fecha;
+            document.getElementById('modalHora').textContent = props.hora;
+
+            // Muestra el modal
+            const citaModal = new bootstrap.Modal(document.getElementById('detalleCitaModal'));
+            citaModal.show();
         }
     });
 
     calendar.render();
 });
+

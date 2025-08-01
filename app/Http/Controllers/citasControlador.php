@@ -12,11 +12,23 @@ class citasControlador extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        // Solo mostrar las citas que NO estén canceladas
-        $citas = Citas::with(['paciente', 'usuario'])
+        $cedulaPaciente = $request->input('cedula');
+        $fecha = $request->input('fecha');
+
+        $citas = Citas::with('paciente', 'usuario')
             ->where('estado', '!=', 'Eliminada')
+            ->when($cedulaPaciente, function ($query) use ($cedulaPaciente) {
+                $query->whereHas('paciente', function ($q) use ($cedulaPaciente) {
+                    $q->where('cedula', 'like', "%{$cedulaPaciente}%");
+                });
+            })
+            ->when($fecha, function ($query) use ($fecha) {
+                $query->whereDate('fecha', $fecha);
+            })
+            ->orderBy('updated_at', 'desc')
             ->paginate(10);
 
         $pacientes = Paciente::all();
@@ -24,8 +36,6 @@ class citasControlador extends Controller
 
         return view('citas/indexCitas', compact('citas', 'pacientes', 'odontologos'));
     }
-
-
 
     public function buscarPacientePorCedula(Request $request)
     {
@@ -47,37 +57,32 @@ class citasControlador extends Controller
     //Calendario
     public function verCalendario()
     {
-        $citas = Citas::where('estado', '!=', 'Eliminada')->get();
+        $citas = Citas::with('paciente')->where('estado', '!=', 'Eliminada')->get();
 
         $eventos = $citas->map(function ($cita) {
+            // Definir el color según el estado
+            $color = match ($cita->estado) {
+                'Pendiente' => '#f39c12',   // Naranja
+                'Confirmada' => '#28a745',  // Verde
+                'Cancelada' => '#dc3545',   // Rojo
+                default => '#6c757d',       // Gris (para cualquier otro estado)
+            };
+
             return [
                 'title' => $cita->odontologo . ' - ' . $cita->paciente->nombre_p . ' ' . $cita->paciente->apellido_p,
                 'start' => $cita->fecha . 'T' . $cita->hora,
-                'color' => $cita->estado === 'Pendiente' ? '#f39c12' : '#28a745',
+                'color' => $color,
+
+                // Propiedades para el modal
+                'paciente' => $cita->paciente->nombre_p . ' ' . $cita->paciente->apellido_p,
+                'odontologo' => $cita->odontologo,
+                'fecha' => $cita->fecha,
+                'hora' => $cita->hora,
+                'estado' => $cita->estado,
             ];
         });
 
-        return view('citas/calendarioCitas', compact('eventos'));
-    }
-
-
-    public function calendarioHtml()
-    {
-        $citas = Citas::where('estado', '!=', 'Cancelada')->get();
-
-        $eventos = $citas->map(function ($cita) {
-            return [
-                'title' => $cita->odontologo . ' - ' . $cita->paciente->nombre_p . ' ' . $cita->paciente->apellido_p,
-                'start' => $cita->fecha . 'T' . $cita->hora,
-                'color' => $cita->estado === 'Pendiente' ? '#f39c12' : '#28a745',
-            ];
-        });
-
-        // Lo conviertes a JSON para insertar en el HTML
-        $jsonEventos = $eventos->toJson();
-
-        // Pasas esa variable a la vista blade
-        return view('citas/calendarioCitas', compact('jsonEventos'));
+        return view('citas/calendarioCitas', ['eventos' => $eventos]);
     }
 
 
@@ -120,6 +125,16 @@ class citasControlador extends Controller
 
         return redirect()->back()->with('success', 'Cita agendada correctamente.');
     }
+
+    public function cambiarEstado(Request $request)
+    {
+        $cita = Citas::findOrFail($request->input('id_cita'));
+        $cita->estado = $request->input('estado');
+        $cita->save();
+
+        return redirect()->route('indexCitas')->with('success', 'Estado actualizado correctamente.');
+    }
+
 
     /**
      * Display the specified resource.

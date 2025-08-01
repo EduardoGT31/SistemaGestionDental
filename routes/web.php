@@ -88,6 +88,7 @@ Route::get('/buscar-paciente', [citasControlador::class, 'buscarPacientePorCedul
 Route::post('/citas/guardar', [citasControlador::class, 'store'])->name('storeCitas');
 Route::put('/citas/update', [citasControlador::class, 'update'])->name('updateCitas');
 Route::delete('/citas/delete', [citasControlador::class, 'destroy'])->name('destroyCitas');
+Route::put('/citas/cambiar-estado', [citasControlador::class, 'cambiarEstado'])->name('cambiarEstadoCita');
 
 //Calendario
 Route::get('/citas/calendario', [CitasControlador::class, 'verCalendario'])->name('calendarioCitas');

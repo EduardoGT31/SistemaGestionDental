@@ -66,7 +66,7 @@
                         <a class="nav-link text-white" href="{{ route('indexPaciente') }}"><i class="bi bi-person-lines-fill"></i> Pacientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route('indexCitas') }}"><i class="bi bi-calendar-check"></i> Citas</a>
+                        <a class="nav-link text-white" href="{{ route('calendarioCitas') }}"><i class="bi bi-calendar-check"></i> Citas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#"><i class="bi bi-file-earmark-bar-graph"></i> Reportes</a>

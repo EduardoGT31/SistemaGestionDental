@@ -22,8 +22,8 @@
                     <input type="hidden" name="id_usuario" id="editar_id_usuario" value="{{ session('id') }}">
 
                     <div class="mb-3">
-                        <label>Paciente</label>
-                        <input type="text" class="form-control" value="{{ $cita->paciente->nombre_p }} {{ $cita->paciente->nombre_s }} {{ $cita->paciente->apellido_p }} {{ $cita->paciente->apellido_s }}" disabled>
+                        <label for="nombre_completo" class="form-label">Paciente</label>
+                        <input type="text" class="form-control" id="nombre_completo" name="nombre_completo" disabled>
                     </div>
 
                     <!-- Odontólogo -->
@@ -87,6 +87,11 @@
 
         document.getElementById('editar_id_cita').value = cita.id_cita;
         document.getElementById('editar_id_paciente').value = cita.id_paciente;
+        document.getElementById('nombre_completo').value =
+            cita.paciente.nombre_p + ' ' +
+            (cita.paciente.nombre_s ?? '') + ' ' +
+            cita.paciente.apellido_p + ' ' +
+            (cita.paciente.apellido_s ?? '');
         document.getElementById('editar_id_usuario').value = cita.id_usuario;
         document.getElementById('editar_odontologo').value = cita.odontologo;
         document.getElementById('editar_fecha').value = cita.fecha;
