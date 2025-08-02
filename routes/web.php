@@ -63,6 +63,15 @@ Route::get('/dashboard', function () {
     return view('dashboard/menuPrincipalAdmin');
 })->name('inicioAdmin');*/
 
+//Recuperacion
+// Ruta para mostrar el formulario de ingreso de correo
+Route::get('/recuperar', [LoginControlador::class, 'formCorreo'])->name('recuperar');
+
+// Ruta que verifica si el correo existe y el usuario está activo
+Route::get('/recuperar', [LoginControlador::class, 'mostrarFormulario'])->name('recuperar.formulario');
+Route::post('/recuperar/verificar', [LoginControlador::class, 'verificarCorreo'])->name('recuperar.verificar');
+Route::post('/recuperar/actualizar', [LoginControlador::class, 'actualizar'])->name('recuperar.actualizar');
+
 //Usuarios
 Route::get('/users', [usuarioControlador::class, 'index'])->name('indexUsuarios');
 Route::post('/users/store', [usuarioControlador::class, 'store'])->name('crearUsuario');

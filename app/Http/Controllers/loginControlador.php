@@ -8,42 +8,6 @@ use Illuminate\Support\Facades\Hash;
 
 class loginControlador extends Controller
 {
-
-    /*public function verificacionLogin(Request $req)
-    {
-
-        $req->validate([
-            'usuario' => 'required|min:3',
-            'contrasenia' => 'required|min:8'
-        ]);
-
-        $usuario = usuario::where('usuario', $req->usuario)->first();
-
-        /*if($usuario && Hash::check($req->contrasenia, $usuario->contrasenia)){
-
-            session()->put([
-                'id' => $usuario -> id,
-                'nombre_p' => $usuario -> nombre_p,
-                'apellido_p' => $usuario -> apellido_p
-            ]);
-
-            return redirect()->route('loginExitoso');
-        } -
-
-        if ($usuario && $req->contrasenia == $usuario->contrasenia || $usuario && Hash::check($req->contrasenia, $usuario->contrasenia)) {
-
-            session()->put([
-                'id' => $usuario->id,
-                'nombre_p' => $usuario->nombre_p,
-                'apellido_p' => $usuario->apellido_p
-            ]);
-
-            return redirect()->route('loginExitoso');
-        }
-
-        return back()->withErrors(['usuario' => 'Credenciales incorrectas'])->withInput();
-    }*/
-
     public function verificacionLogin(Request $req)
     {
         $req->validate([
@@ -92,5 +56,53 @@ class loginControlador extends Controller
         ]);
 
         return redirect()->route('login');
+    }
+
+
+    //Recuperacion
+    public function mostrarFormulario()
+    {
+        return view('auth.recuperarCorreo');
+    }
+
+    public function verificarCorreo(Request $request)
+    {
+        $request->validate([
+            'correo' => 'required|email',
+            'opcion' => 'required|in:usuario,contrasenia'
+        ]);
+
+        $usuario = Usuario::where('correo', $request->correo)->first();
+
+        if (!$usuario) {
+            return back()->with('error', 'Correo no encontrado');
+        }
+
+        return view('auth.recuperarUsuarioContrasenia', [
+            'usuario' => $usuario,
+            'opcion' => $request->opcion
+        ]);
+    }
+
+    public function actualizar(Request $request)
+    {
+        $usuario = Usuario::findOrFail($request->id_usuario);
+
+        if ($request->filled('nuevo_usuario')) {
+            $request->validate(['nuevo_usuario' => 'required|string|max:60|unique:usuarios,usuario']);
+            $usuario->usuario = $request->nuevo_usuario;
+        }
+
+        if ($request->filled('nueva_contrasenia')) {
+            $request->validate([
+                'nueva_contrasenia' => 'required|string|min:6',
+                'confirmar_contrasenia' => 'required|same:nueva_contrasenia'
+            ]);
+            $usuario->contrasenia = bcrypt($request->nueva_contrasenia);
+        }
+
+        $usuario->save();
+
+        return redirect()->route('login')->with('success', 'Datos actualizados correctamente.');
     }
 }
