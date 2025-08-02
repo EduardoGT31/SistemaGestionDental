@@ -49,7 +49,7 @@
                 <i class="bi bi-bar-chart-line" style="color: #6f42c1;"></i>
                 <h5 class="mt-3">Reportes</h5>
                 <p>Generar estadísticas y análisis.</p>
-                <a href="#" class="btn w-100 text-white" style="background-color: #6f42c1;">Acceder</a>
+                <a href="{{ route('indexReporte') }}" class="btn w-100 text-white" style="background-color: #6f42c1;">Acceder</a>
             </div>
         </div>
     </div>

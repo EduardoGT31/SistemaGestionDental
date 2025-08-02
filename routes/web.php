@@ -5,6 +5,7 @@ use App\Http\Controllers\usuarioControlador;
 use App\Http\Controllers\pacienteControlador;
 use App\Http\Controllers\historialClinicoControlador;
 use App\Http\Controllers\citasControlador;
+use App\Http\Controllers\reporteControlador;
 use Illuminate\Support\Facades\Route;
 
 // Ruta para mostrar formulario login (pública)
@@ -101,6 +102,9 @@ Route::put('/citas/cambiar-estado', [citasControlador::class, 'cambiarEstado'])-
 
 //Calendario
 Route::get('/citas/calendario', [CitasControlador::class, 'verCalendario'])->name('calendarioCitas');
+
+//Reportes
+Route::get('/report', [reporteControlador::class, 'index'])->name('indexReporte');
 
 //Pruebas
 /*Route::get('/citas/calendario', [citasControlador::class, 'calendario'])->name('citas.calendario');
