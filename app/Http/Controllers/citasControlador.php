@@ -112,7 +112,6 @@ class citasControlador extends Controller
             'hora' => 'required',
         ]);
 
-
         Citas::create([
             'id_paciente' => $request->id_paciente,
             'id_usuario' => $request->id_usuario,
@@ -121,7 +120,6 @@ class citasControlador extends Controller
             'hora' => $request->hora,
             'estado' => 'Pendiente' // <-- Fijamos siempre este valor
         ]);
-
 
         return redirect()->back()->with('success', 'Cita agendada correctamente.');
     }

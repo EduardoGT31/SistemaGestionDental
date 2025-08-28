@@ -82,7 +82,7 @@
                             <i class="bi bi-person-circle"></i> Cuenta
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Perfil</a></li>
+                            
                             <li>
                                 <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#confirmLogoutModal">
                                     <i class="bi bi-box-arrow-right"></i> Cerrar sesión

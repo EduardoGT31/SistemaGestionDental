@@ -105,6 +105,14 @@ Route::get('/citas/calendario', [CitasControlador::class, 'verCalendario'])->nam
 
 //Reportes
 Route::get('/report', [reporteControlador::class, 'index'])->name('indexReporte');
+Route::get('/reportes/historial-por-paciente', [reporteControlador::class, 'vistaHistorialPorPaciente'])->name('reporte.HistorialPaciente');
+Route::get('/reportes/historial/{id}/pdf', [ReporteControlador::class, 'generarHistorialPDF'])->name('reportes.historial.pdf');
+
+// Vista del formulario para elegir odontólogo
+Route::get('/reportes/por-odontologo', [reporteControlador::class, 'vistaPorOdontologo'])->name('reportes.vistaPorOdontologo');
+Route::post('/reportes/por-odontologo/pdf', [reporteControlador::class, 'generarPorOdontologo'])->name('reportes.generarPorOdontologo');
+Route::get('/reportes/citas-hoy', [reporteControlador::class, 'citasHoy'])->name('reportes.citas.hoy');
+
 
 //Pruebas
 /*Route::get('/citas/calendario', [citasControlador::class, 'calendario'])->name('citas.calendario');
